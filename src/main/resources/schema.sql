@@ -7,4 +7,14 @@ CREATE TABLE users (
     active INT NOT NULL DEFAULT '1',
     roles VARCHAR(50) NOT NULL DEFAULT '',
     permissions VARCHAR(50) NOT NULL DEFAULT ''
+);
+
+CREATE TABLE profile (
+    user_id INT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL DEFAULT '',
+    last_name VARCHAR(100) NOT NULL DEFAULT '',
+    email VARCHAR(100) NOT NULL DEFAULT '',
+    phone VARCHAR(50) NOT NULL DEFAULT '',
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    FOREIGN KEY (user_id) REFERENCES users(id)
 )

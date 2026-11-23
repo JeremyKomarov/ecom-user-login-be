@@ -38,6 +38,7 @@ public class SecurityConfigure {
                         .requestMatchers("/api/public/test1").authenticated()
                         .requestMatchers("/api/public/test2").hasRole("ADMIN")
                         .requestMatchers("/api/public/test3").hasRole("USER")
+                        .requestMatchers("/api/profile").authenticated()
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
