@@ -5,7 +5,7 @@ import com.userLogin.userLogin.model.ProfileResponse;
 
 public interface ProfileService {
     ProfileResponse getProfile(String username) throws Exception;
-    ProfileResponse createProfile(String username, ProfileRequest profileRequest);
-    ProfileResponse updateProfile(String username, ProfileRequest profileRequest);
-    void deleteProfile(String username);
+    ProfileResponse createProfile(String username, ProfileRequest profileRequest) throws Exception;
+    ProfileResponse updateProfile(String username, ProfileRequest profileRequest) throws Exception;
+    void deleteProfile(String username) throws Exception;
 }

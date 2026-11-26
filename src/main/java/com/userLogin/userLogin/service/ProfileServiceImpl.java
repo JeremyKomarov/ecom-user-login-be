@@ -24,23 +24,42 @@ public class ProfileServiceImpl implements ProfileService{
 
         return new ProfileResponse(
                 customerUser.getUsername(),
+                customerUser.getRoles(),
                 profile
         );
     }
 
     @Override
-    public ProfileResponse createProfile(String username, ProfileRequest profileRequest) {
-        return null;
+    public ProfileResponse createProfile(String username, ProfileRequest profileRequest) throws Exception {
+        CustomerUser customerUser = this.findExistingUser(username);
+        Profile customerProfile = profileRepository.getProfileByUserId(customerUser.getId());
+        if (profileRepository.getProfileByUserId(customerUser.getId()) != null) {
+            throw new Exception("Details already exist, use update instead");
+        }
+
+        profileRepository.createProfile(profileRequest.toProfile(customerUser.getId()));
+        return this.getProfile(username);
     }
 
     @Override
-    public ProfileResponse updateProfile(String username, ProfileRequest profileRequest) {
-        return null;
+    public ProfileResponse updateProfile(String username, ProfileRequest profileRequest) throws Exception {
+        CustomerUser customerUser = this.findExistingUser(username);
+        if (profileRepository.getProfileByUserId(customerUser.getId()) == null) {
+            throw new Exception("No details to update, create them first");
+        }
+
+        profileRepository.updateProfile(profileRequest.toProfile(customerUser.getId()));
+        return this.getProfile(username);
     }
 
     @Override
-    public void deleteProfile(String username) {
+    public void deleteProfile(String username) throws Exception {
+        CustomerUser customerUser = this.findExistingUser(username);
+        if (profileRepository.getProfileByUserId(customerUser.getId()) == null) {
+            throw new Exception("No details to delete");
+        }
 
+        profileRepository.deleteProfileByUserId(customerUser.getId());
     }
 
     private CustomerUser findExistingUser(String username) throws Exception {

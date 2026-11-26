@@ -15,11 +15,6 @@ public class ProfileRepositoryImpl implements ProfileRepository{
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void createProfile(Profile profile) {
-
-    }
-
-    @Override
     public Profile getProfileByUserId(Long userId) {
         String sql = "SELECT * FROM " + PROFILE_TABLE_NAME + " WHERE user_id=?";
 
@@ -35,12 +30,44 @@ public class ProfileRepositoryImpl implements ProfileRepository{
     }
 
     @Override
-    public void updateProfile(Profile profile) {
+    public void createProfile(Profile profile) {
+        String sql = "INSERT INTO " + PROFILE_TABLE_NAME +
+                " (user_id, first_name, last_name, email, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
 
+        jdbcTemplate.update(
+                sql,
+                profile.getUserId(),
+                profile.getFirstName(),
+                profile.getLastName(),
+                profile.getEmail(),
+                profile.getPhone(),
+                profile.getAddress()
+        );
+    }
+
+
+
+    @Override
+    public void updateProfile(Profile profile) {
+        String sql = "UPDATE " + PROFILE_TABLE_NAME +
+                " SET first_name=?, last_name=?, email=?, phone=?, address=?" +
+                " WHERE user_id=?";
+
+        jdbcTemplate.update(
+                sql,
+                profile.getFirstName(),
+                profile.getLastName(),
+                profile.getEmail(),
+                profile.getPhone(),
+                profile.getAddress(),
+                profile.getUserId()
+        );
     }
 
     @Override
     public void deleteProfileByUserId(Long userId) {
+        String sql = "DELETE FROM " + PROFILE_TABLE_NAME + " WHERE user_id=?";
 
+        jdbcTemplate.update(sql,userId);
     }
 }
